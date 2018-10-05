@@ -6,7 +6,7 @@ WINDOW_HEIGHT = 800
 FPS = 10
 
 
-class Snake(object):
+class Pacman(object):
     RADIUS = 20
     WIDTH_IN_TILES = WINDOW_WIDTH / RADIUS
 
@@ -73,7 +73,7 @@ def run():
 
 
 def game_loop(win):
-    snake = Snake()
+    pacman = Pacman()
     clock = pygame.time.Clock()
 
     while True:
@@ -82,8 +82,8 @@ def game_loop(win):
 
         win.fill((0, 0, 0))
 
-        snake.update(events)
-        snake.draw(win)
+        pacman.update(events)
+        pacman.draw(win)
 
         pygame.display.update()
         clock.tick(FPS)
