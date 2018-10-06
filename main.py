@@ -1,9 +1,9 @@
 import pygame
-import pacman
+from Pacman import *
+from config import *
+from Map import *
 
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 800
-FPS = 10
+
 
 
 def run():
@@ -13,11 +13,14 @@ def run():
         pygame.HWSURFACE
     )
     pygame.display.set_caption("PacMan-Game")
-    game_loop(win)
+    mapa = Map()
+
+    game_loop(win, mapa)
 
 
-def game_loop(win):
-    pacman = Pacman()
+
+def game_loop(win, mapa):
+    pacman = Pacman(mapa)
     clock = pygame.time.Clock()
 
     while True:
@@ -26,6 +29,7 @@ def game_loop(win):
 
         win.fill((0, 0, 0))
 
+        mapa.draw(win)
         pacman.update(events)
         pacman.draw(win)
 
