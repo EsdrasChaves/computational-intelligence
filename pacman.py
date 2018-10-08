@@ -5,7 +5,7 @@ from Map import *
 
 
 class Pacman(object):
-    RADIUS = int(WIDTH_IN_TILES/2)
+    RADIUS = int(TILE_WIDTH/2)
 
     def __init__(self, mapa):
         self.mapa = mapa
@@ -17,14 +17,20 @@ class Pacman(object):
 
     def update(self, events):
         self.handle_mov(events)
+        self.handle_colision()
+    
+    def handle_colision(self):
+        if(self.mapa.map[self.pos_y][self.pos_x] == 2):
+            self.mapa.getFruit(self.pos_y,self.pos_x)
+
 
     def draw(self, win):
         pygame.draw.circle(
             win,
             pygame.color.Color("yellow"),
             (
-                self.pos_x * WIDTH_IN_TILES + self.RADIUS,
-                self.pos_y * HEIGHT_IN_TILES + self.RADIUS
+                self.pos_x * TILE_WIDTH + self.RADIUS,
+                self.pos_y * TILE_HEIGHT + self.RADIUS
             ), self.RADIUS
         )
 
@@ -49,17 +55,12 @@ class Pacman(object):
                     movement = vel_list['right']
 
 
-        if(self.mapa.map[self.pos_y + movement[1]][self.pos_x + movement[0]] != '1'):
+        if(self.mapa.map[self.pos_y + movement[1]][self.pos_x + movement[0]] != 1):
             self.vel_x, self.vel_y = movement
             
-        if(self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != '1'):
+        if(self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != 1):
             self.pos_x += self.vel_x
             self.pos_y += self.vel_y
 
-    def check_borders(self):
-        if self.pos_x > WIDTH_IN_TILES - 1 or self.pos_x <= 0:
-            end_game()
-        elif self.pos_y > HEIGHT_IN_TILES - 1 or self.pos_y <= 0:
-            end_game()
 
 
