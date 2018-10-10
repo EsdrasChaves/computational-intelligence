@@ -8,8 +8,8 @@ class Pacman(object):
     RADIUS = int(TILE_WIDTH/2)
     def __init__(self, mapa):
         self.mapa = mapa
-        self.pos_x = 1 
-        self.pos_y = 1 
+        self.pos_x = 13 
+        self.pos_y = 11 
 
         self.vel_x = 1
         self.vel_y = 0
@@ -24,8 +24,9 @@ class Pacman(object):
         self.handle_colision()
 
         if(self.Frame == FPS/MPS):
-            self.Frame = 0;
-    
+            self.Frame = 0
+        
+        
     def handle_colision(self):
         if(self.mapa.map[self.pos_y][self.pos_x] == 2):
             self.mapa.getFruit(self.pos_y,self.pos_x)
@@ -42,6 +43,7 @@ class Pacman(object):
             ), self.RADIUS
         )
 
+        
 
     def handle_mov(self, events):
         movement = (self.vel_x, self.vel_y)

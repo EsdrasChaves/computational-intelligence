@@ -67,3 +67,5 @@ class Ghost(object):
     def calcDist(self, fst_point, snd_point):
         return math.hypot(fst_point[0] - snd_point[0], fst_point[1] - snd_point[1])
 
+    def getPos(self):
+        return (self.pos_x, self.pos_y)
