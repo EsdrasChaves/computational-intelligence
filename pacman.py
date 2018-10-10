@@ -6,7 +6,6 @@ from Map import *
 
 class Pacman(object):
     RADIUS = int(TILE_WIDTH/2)
-
     def __init__(self, mapa):
         self.mapa = mapa
         self.pos_x = 1 
@@ -15,13 +14,22 @@ class Pacman(object):
         self.vel_x = 1
         self.vel_y = 0
 
+        self.Frame = 0
+        self.score = 0
+
     def update(self, events):
+        self.Frame += 1
+
         self.handle_mov(events)
         self.handle_colision()
+
+        if(self.Frame == FPS/MPS):
+            self.Frame = 0;
     
     def handle_colision(self):
         if(self.mapa.map[self.pos_y][self.pos_x] == 2):
             self.mapa.getFruit(self.pos_y,self.pos_x)
+            self.score += 1
 
 
     def draw(self, win):
@@ -54,11 +62,11 @@ class Pacman(object):
                 elif event.key == pygame.K_RIGHT:
                     movement = vel_list['right']
 
-
+        
         if(self.mapa.map[self.pos_y + movement[1]][self.pos_x + movement[0]] != 1):
             self.vel_x, self.vel_y = movement
             
-        if(self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != 1):
+        if(self.Frame == 15 and self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != 1):
             self.pos_x += self.vel_x
             self.pos_y += self.vel_y
 

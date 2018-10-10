@@ -5,7 +5,6 @@ from Map import *
 
 
 
-
 def run():
     pygame.init()
     win = pygame.display.set_mode(
@@ -34,6 +33,8 @@ def game_loop(win, mapa):
         pacman.draw(win)
 
         pygame.display.update()
+
+
         clock.tick(FPS)
 
 
