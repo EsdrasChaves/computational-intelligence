@@ -49,7 +49,7 @@ class Ghost(object):
         for _, vel in self.vel_list.items():
             if(self.is_valid_move(vel)):
                 new_pos = (self.pos_x + vel[0], self.pos_y + vel[1])
-                new_dist = math.hypot(target[0] - new_pos[0], target[1] - new_pos[1])
+                new_dist = self.calcDist(target, new_pos)
                 if(new_dist < dist):
                     dist = new_dist
                     move = new_pos
@@ -64,5 +64,6 @@ class Ghost(object):
         return True if ((self.mapa.map[self.pos_y + vel[1]][self.pos_x + vel[0]] != 1) and 
                         (tuple(map(sum, zip(vel, self.current_vel))) != (0, 0))) else False
 
-
+    def calcDist(self, fst_point, snd_point):
+        return math.hypot(fst_point[0] - snd_point[0], fst_point[1] - snd_point[1])
 

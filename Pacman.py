@@ -42,6 +42,7 @@ class Pacman(object):
             ), self.RADIUS
         )
 
+
     def handle_mov(self, events):
         movement = (self.vel_x, self.vel_y)
         vel_list = {
