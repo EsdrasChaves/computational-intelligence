@@ -71,4 +71,8 @@ class Pacman(object):
             self.pos_y += self.vel_y
 
 
-
+    def getPos(self):
+        return (self.pos_x, self.pos_y)
+    
+    def getVel(self):
+        return (self.vel_x, self.vel_y)

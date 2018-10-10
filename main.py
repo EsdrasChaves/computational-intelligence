@@ -1,5 +1,7 @@
 import pygame
 from Pacman import *
+from Blinky import *
+from Pinky import *
 from config import *
 from Map import *
 
@@ -20,6 +22,8 @@ def run():
 
 def game_loop(win, mapa):
     pacman = Pacman(mapa)
+    blinky = Blinky(mapa)
+    pinky = Pinky(mapa)
     clock = pygame.time.Clock()
 
     while True:
@@ -31,6 +35,10 @@ def game_loop(win, mapa):
         mapa.draw(win)
         pacman.update(events)
         pacman.draw(win)
+        blinky.update(pacman.getPos())
+        blinky.draw(win)
+        pinky.update(pacman.getPos(), pacman.getVel())
+        pinky.draw(win)
 
         pygame.display.update()
 
