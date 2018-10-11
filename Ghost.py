@@ -7,11 +7,12 @@ from Map import *
 
 class Ghost(object):
     RADIUS = int(TILE_WIDTH/2)
-    def __init__(self, mapa, color, pos_x, pos_y):
+    def __init__(self, mapa, color, pos_x, pos_y, pacman):
         self.mapa = mapa
         self.pos_x = pos_x 
         self.pos_y = pos_y 
         self.color = color
+        self.pacman = pacman
 
         self.current_vel = (0, 0)
 
@@ -30,7 +31,10 @@ class Ghost(object):
         self.handle_mov(target)
 
         if(self.Frame == FPS/MPS):
-            self.Frame = 0;
+            self.Frame = 0
+
+        if ((self.pos_x, self.pos_y) == self.pacman.getPos()):
+            self.pacman.killPacman()
     
 
     def draw(self, win):

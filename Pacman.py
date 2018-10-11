@@ -14,6 +14,8 @@ class Pacman(object):
         self.vel_x = 1
         self.vel_y = 0
 
+        self.isAlive = True
+
         self.Frame = 0
         self.score = 0
 
@@ -79,3 +81,6 @@ class Pacman(object):
     
     def getVel(self):
         return (self.vel_x, self.vel_y)
+    
+    def killPacman(self):
+        self.isAlive = False

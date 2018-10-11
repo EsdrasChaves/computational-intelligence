@@ -17,7 +17,7 @@ class Map(object):
                 if(self.map[j][i] == 1):
                     pygame.draw.rect( 
                     win,
-                    pygame.color.Color("white"),
+                    pygame.color.Color("grey"),
                     [i*TILE_HEIGHT,
                     j*TILE_WIDTH,
                     TILE_WIDTH,
@@ -27,7 +27,7 @@ class Map(object):
                 if(self.map[j][i] == 2):
                     pygame.draw.circle(
                         win,
-                        pygame.color.Color("red"),
+                        pygame.color.Color("white"),
                         (int((i + 0.5)*TILE_HEIGHT),
                         int((j + 0.5)*TILE_WIDTH)),
                         FOOD_SIZE

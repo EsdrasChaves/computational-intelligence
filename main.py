@@ -17,20 +17,20 @@ def run():
     )
     pygame.display.set_caption("PacMan-Game")
     mapa = Map()
-
+    pygame.font.init()
     game_loop(win, mapa)
 
 
 
 def game_loop(win, mapa):
     pacman = Pacman(mapa)
-    blinky = Blinky(mapa)
-    pinky = Pinky(mapa)
-    clyde = Clyde(mapa)
-    inky = Inky(mapa)
+    blinky = Blinky(mapa, pacman)
+    pinky = Pinky(mapa, pacman)
+    clyde = Clyde(mapa, pacman)
+    inky = Inky(mapa, pacman)
     clock = pygame.time.Clock()
 
-    while True:
+    while pacman.isAlive:
         events = pygame.event.get()
         handle_quit(events)
 
@@ -39,20 +39,22 @@ def game_loop(win, mapa):
         mapa.draw(win)
         pacman.update(events)
         pacman.draw(win)
-        blinky.update(pacman.getPos())
+        blinky.update()
         blinky.draw(win)
-        pinky.update(pacman.getPos(), pacman.getVel())
+        pinky.update()
         pinky.draw(win)
-        clyde.update(pacman.getPos())
+        clyde.update()
         clyde.draw(win)
-        inky.update(pacman.getPos(), pacman.getVel(), blinky.getPos())
+        inky.update(blinky.getPos())
         inky.draw(win)
+
+        textsurface = pygame.font.SysFont('Comic Sans MS', 25).render('Score: {}'.format(pacman.score), False, (255, 255, 255))
+        win.blit(textsurface,(240,300))
 
         pygame.display.update()
 
-
         clock.tick(FPS)
-
+    input()
 
 def handle_quit(events):
     for event in events:
