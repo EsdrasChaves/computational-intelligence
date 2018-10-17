@@ -1,12 +1,12 @@
 import pygame
 from config import *
 from Map import *
-
+from NeuralNetwork import *
 
 
 class Pacman(object):
     RADIUS = int(TILE_WIDTH/2)
-    def __init__(self, mapa):
+    def __init__(self, mapa, neural_net):
         self.mapa = mapa
         self.pos_x = 13 
         self.pos_y = 11 
@@ -19,11 +19,18 @@ class Pacman(object):
         self.Frame = 0
         self.score = 0
 
-    def update(self, events):
+        self.count = 0
+
+        self.neural_network =  neural_net
+
+    def update(self, input_data):
         self.Frame += 1
 
-        self.handle_mov(events)
+        self.handle_mov(input_data)
         self.handle_colision()
+
+        if(self.count > 75):
+            self.killPacman()
 
         if(self.Frame == FPS/MPS):
             self.Frame = 0
@@ -32,6 +39,7 @@ class Pacman(object):
     def handle_colision(self):
         if(self.mapa.map[self.pos_y][self.pos_x] == 2):
             self.mapa.getFruit(self.pos_y,self.pos_x)
+            self.count = 0
             self.score += 1
 
 
@@ -47,7 +55,7 @@ class Pacman(object):
 
         
 
-    def handle_mov(self, events):
+    def handle_mov(self, input_data):
         movement = (self.vel_x, self.vel_y)
         vel_list = {
             'up': (0, -1),
@@ -56,17 +64,7 @@ class Pacman(object):
             'right': (1, 0)
         }
 
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    movement = vel_list['up']
-                elif event.key == pygame.K_DOWN:
-                    movement = vel_list['down']
-                elif event.key == pygame.K_LEFT:
-                    movement = vel_list['left']
-                elif event.key == pygame.K_RIGHT:
-                    movement = vel_list['right']
-
+        movement = vel_list[self.neural_network.nextaction(input_data)]
         
         if(self.mapa.map[self.pos_y + movement[1]][self.pos_x + movement[0]] != 1):
             self.vel_x, self.vel_y = movement
@@ -74,6 +72,8 @@ class Pacman(object):
         if(self.Frame == 15 and self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != 1):
             self.pos_x += self.vel_x
             self.pos_y += self.vel_y
+        
+        self.count += 1
 
 
     def getPos(self):
