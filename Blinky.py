@@ -4,7 +4,7 @@ from Ghost import *
 
 class Blinky(Ghost):
     def __init__(self, mapa, pacman):
-        Ghost.__init__(self, mapa, "red", 12, 11, pacman)
+        Ghost.__init__(self, mapa, "red", 1, 1, pacman)
 
     def update(self):
         Ghost.update(self, self.pacman.getPos())

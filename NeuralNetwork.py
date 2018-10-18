@@ -22,15 +22,13 @@ class NeuralNetwork:
             self.weights = weights
 
     def setweights(self):
-        #self.depth = randint(1, self.max_depth)
-        #self.width = randint(1, self.max_width)
 
-        self.weights.append(0.1 *  np.random.random_sample((self.input_size, self.width)) - 1)
+        self.weights.append(2 *  np.random.random_sample((self.input_size, self.width)) - 1)
 
         for _ in range(self.depth - 1):
-            self.weights.append(0.1 * np.random.random_sample((self.width, self.width)) - 1)
+            self.weights.append(2 * np.random.random_sample((self.width, self.width)) - 1)
 
-        self.weights.append(0.1 * np.random.random_sample((self.width, self.output_size)) - 1)
+        self.weights.append(2 * np.random.random_sample((self.width, self.output_size)) - 1)
 
     def feedforward(self, input_data):
         sigmoid_v = np.vectorize(self.sigmoid)

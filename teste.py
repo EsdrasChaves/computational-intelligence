@@ -1,3 +1,7 @@
+import numpy as np
 
-lista = [1, 2, 3, 4, 5]
-print(lista[:int(len(lista)/2)])
+lista = np.array([[1, 2, 3],
+                  [3, 2, 1]])
+
+print(lista.shape)
+print(lista[1, 2])

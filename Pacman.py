@@ -8,8 +8,8 @@ class Pacman(object):
     RADIUS = int(TILE_WIDTH/2)
     def __init__(self, mapa, neural_net):
         self.mapa = mapa
-        self.pos_x = 1 
-        self.pos_y = 26 
+        self.pos_x = 10
+        self.pos_y = 11 
 
         self.vel_x = 1
         self.vel_y = 0

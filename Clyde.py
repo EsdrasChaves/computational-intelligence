@@ -6,7 +6,7 @@ from Ghost import *
 
 class Clyde(Ghost):
     def __init__(self, mapa, pacman):
-        Ghost.__init__(self, mapa, "orange", 10, 11, pacman)
+        Ghost.__init__(self, mapa, "orange", 26, 26, pacman)
 
     def update(self):
         if (Ghost.calcDist(self, (self.pos_x, self.pos_y), self.pacman.getPos()) < 8):
