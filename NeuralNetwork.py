@@ -6,7 +6,7 @@ import math
 # Cada linha da matriz é uma camada e cada coluna os pesos
 
 class NeuralNetwork:
-    def __init__(self, weights=None, max_depth=10, max_width=10, input_size=10, output_size=4, actions=["up", "right", "down", "left"], new_neural_net=True):
+    def __init__(self, weights=None, max_depth=1, max_width=10, input_size=4, output_size=4, actions=["up", "right", "down", "left"], new_neural_net=True):
         self.max_depth = max_depth
         self.max_width = max_width
         self.input_size = input_size
@@ -25,17 +25,16 @@ class NeuralNetwork:
         #self.depth = randint(1, self.max_depth)
         #self.width = randint(1, self.max_width)
 
-        self.weights.append(np.random.rand(self.input_size, self.width))
+        self.weights.append(0.1 *  np.random.random_sample((self.input_size, self.width)) - 1)
 
         for _ in range(self.depth - 1):
-            self.weights.append(np.random.rand(self.width, self.width))
+            self.weights.append(0.1 * np.random.random_sample((self.width, self.width)) - 1)
 
-        self.weights.append(np.random.rand(self.width, self.output_size))
+        self.weights.append(0.1 * np.random.random_sample((self.width, self.output_size)) - 1)
 
     def feedforward(self, input_data):
         sigmoid_v = np.vectorize(self.sigmoid)
-        result_layer = np.interp(input_data, (1, 26), (-1, +1))
-
+        result_layer = input_data
 
         for weight in self.weights:
             result_layer = sigmoid_v(np.dot(result_layer, weight))
@@ -45,7 +44,8 @@ class NeuralNetwork:
         self.score = score
 
     def nextaction(self, input_data):
-        return self.actions[np.argmax(self.feedforward(input_data), axis=1)[0]]
+        result = np.argmax(self.feedforward(input_data), axis=1)[0]
+        return self.actions[result]
 
     def sigmoid(self, x):
         return 1 / (1 + math.exp(-x))

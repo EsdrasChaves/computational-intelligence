@@ -4,7 +4,7 @@ from Ghost import *
 
 class Pinky(Ghost):
     def __init__(self, mapa, pacman):
-        Ghost.__init__(self, mapa, "pink", 26, 1, pacman)
+        Ghost.__init__(self, mapa, "pink", 13, 11, pacman)
 
     def update(self):
         target = tuple(map(sum, zip(self.pacman.getPos(), tuple(i * 4 for i in self.pacman.getVel()))))

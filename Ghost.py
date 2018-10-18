@@ -26,7 +26,7 @@ class Ghost(object):
         }
 
     def update(self, target):
-        self.Frame += 1
+        #self.Frame += 1
 
         self.handle_mov(target)
 
@@ -59,10 +59,13 @@ class Ghost(object):
                     move = new_pos
                     new_vel = vel
         
-        if self.Frame == 15:
-            self.pos_x = move[0]
-            self.pos_y = move[1]
-            self.current_vel = new_vel
+        #if self.Frame == 15:
+        #    self.pos_x = move[0]
+        #    self.pos_y = move[1]
+        #    self.current_vel = new_vel
+        self.pos_x = move[0]
+        self.pos_y = move[1]
+        self.current_vel = new_vel
 
     def is_valid_move(self, vel):
         return True if ((self.mapa.map[self.pos_y + vel[1]][self.pos_x + vel[0]] != 1) and 

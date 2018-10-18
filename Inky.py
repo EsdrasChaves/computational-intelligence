@@ -4,7 +4,7 @@ from Ghost import *
 
 class Inky(Ghost):
     def __init__(self, mapa, pacman):
-        Ghost.__init__(self, mapa, "blue", 1, 1, pacman)
+        Ghost.__init__(self, mapa, "blue", 14, 11, pacman)
 
     def update(self, blinky_pos):
         target_aux = tuple(map(sum, zip(self.pacman.getPos(), tuple(i * 4 for i in self.pacman.getVel()))))
