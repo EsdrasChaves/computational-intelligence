@@ -27,12 +27,12 @@ class Pacman(object):
         self.neural_network =  neural_net
 
     def update(self, input_data):
-        #self.Frame += 1
+        self.Frame += 1
 
         self.handle_mov(input_data)
         self.handle_colision()
 
-        if(self.count > 100 or self.movesCount > 100):
+        if(self.count > 100):
             self.killPacman()
             
 
@@ -79,8 +79,7 @@ class Pacman(object):
         if(self.mapa.map[self.pos_y + movement[1]][self.pos_x + movement[0]] != 1):
             self.vel_x, self.vel_y = movement
         
-        #if(self.Frame == 15 and self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != 1):
-        if(self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != 1):
+        if(self.Frame == (FPS/MPS) and self.mapa.map[self.pos_y + self.vel_y][self.pos_x + self.vel_x] != 1):
             self.pos_x += self.vel_x
             self.pos_y += self.vel_y
             self.count2 += 1

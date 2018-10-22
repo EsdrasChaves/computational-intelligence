@@ -38,34 +38,42 @@ def game_loop(win, mapa, neural_net, train):
 
         win.fill((0, 0, 0))
 
+        up = 0
+        down = 0
+        left = 0
+        right = 0
+
         input_data = np.array([[calcDist(pacman.getPos(), blinky.getPos()), calcDist(pacman.getPos(), pinky.getPos()), calcDist(pacman.getPos(), inky.getPos()), calcDist(pacman.getPos(), clyde.getPos())]])
+
+        np.interp(input_data, (0, 36), (-1, +1))
+
+        if(mapa.map[pacman.getPos()[1] - 1][pacman.getPos()[0]] != 1):
+            up = 1
+        if(mapa.map[pacman.getPos()[1] + 1][pacman.getPos()[0]] != 1):
+            down = 1
+        if(mapa.map[pacman.getPos()[1]][pacman.getPos()[0] + 1] != 1):
+            right = 1
+        if(mapa.map[pacman.getPos()[1]][pacman.getPos()[0] - 1] != 1):
+            left = 1
+        
+        input_data = np.append(np.array([[up, right, down, left]]), input_data, axis=1)
+
+        pacman.update(input_data)
+        blinky.update()
+        pinky.update()
+        clyde.update()
+        inky.update(blinky.getPos())
 
         if train == False: 
             mapa.draw(win) 
-        pacman.update(input_data)
-        if train == False: 
             pacman.draw(win)
-        blinky.update()
-        if train == False: 
             blinky.draw(win)
-        pinky.update()
-        if train == False: 
             pinky.draw(win)
-        clyde.update()
-        if train == False: 
             clyde.draw(win)
-        inky.update(blinky.getPos())
-        if train == False: 
             inky.draw(win)
-
-        if train == False: 
             textsurface = pygame.font.SysFont('Comic Sans MS', 25).render('Score: {}'.format(pacman.score), False, (255, 255, 255))
             win.blit(textsurface,(240,300))
-
-        if train == False: 
             pygame.display.update()
-
-        if train == False: 
             clock.tick(FPS)
     return (pacman.score, pacman.count2)
 

@@ -26,15 +26,18 @@ class Ghost(object):
         }
 
     def update(self, target):
-        #self.Frame += 1
+        self.Frame += 1
+
+        if (((self.pos_x, self.pos_y) == self.pacman.getPos()) and self.Frame == (FPS/MPS)):
+            self.pacman.killPacman()
 
         self.handle_mov(target)
 
+        if (((self.pos_x, self.pos_y) == self.pacman.getPos()) and self.Frame == (FPS/MPS)):
+            self.pacman.killPacman()
+
         if(self.Frame == FPS/MPS):
             self.Frame = 0
-
-        if ((self.pos_x, self.pos_y) == self.pacman.getPos()):
-            self.pacman.killPacman()
     
 
     def draw(self, win):
@@ -59,13 +62,10 @@ class Ghost(object):
                     move = new_pos
                     new_vel = vel
         
-        #if self.Frame == 15:
-        #    self.pos_x = move[0]
-        #    self.pos_y = move[1]
-        #    self.current_vel = new_vel
-        self.pos_x = move[0]
-        self.pos_y = move[1]
-        self.current_vel = new_vel
+        if self.Frame == (FPS/MPS):
+            self.pos_x = move[0]
+            self.pos_y = move[1]
+            self.current_vel = new_vel
 
     def is_valid_move(self, vel):
         return True if ((self.mapa.map[self.pos_y + vel[1]][self.pos_x + vel[0]] != 1) and 

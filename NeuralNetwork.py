@@ -6,7 +6,7 @@ import math
 # Cada linha da matriz é uma camada e cada coluna os pesos
 
 class NeuralNetwork:
-    def __init__(self, weights=None, max_depth=1, max_width=10, input_size=4, output_size=4, actions=["up", "right", "down", "left"], new_neural_net=True):
+    def __init__(self, weights=None, max_depth=1, max_width=10, input_size=8, output_size=4, actions=["up", "right", "down", "left"], new_neural_net=True):
         self.max_depth = max_depth
         self.max_width = max_width
         self.input_size = input_size

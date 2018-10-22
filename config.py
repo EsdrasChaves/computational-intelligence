@@ -3,7 +3,7 @@ TILE_HEIGHT = 22
 WINDOW_WIDTH = 28 * TILE_WIDTH
 WINDOW_HEIGHT = 31 * TILE_HEIGHT
 FPS = 30
-MPS = 2 #Movements per second
+MPS = 30 #Movements per second
 FOOD_SIZE = 6
 
 black = (0,0,0)
