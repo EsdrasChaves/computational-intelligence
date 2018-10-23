@@ -26,7 +26,7 @@ class Train():
 
 
     def call(self):
-        for i in range(1000):
+        for i in range(50000):
             print("GENERATION={}\n".format(i))
             for net in self.neural_net:
                 net.setscore(self.fitness(run(net, True)))

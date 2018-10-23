@@ -1,10 +1,10 @@
 from Ghost import *
-
+from config import *
 ### Inky behavior -- Trace a line between Blinky and 4 tiles ahead pacman, double the line length... ###
 
 class Inky(Ghost):
     def __init__(self, mapa, pacman):
-        Ghost.__init__(self, mapa, "blue", 26, 1, pacman)
+        Ghost.__init__(self, mapa, "blue", 10, 11, pacman,1 + TimeBetweenGhosts)
 
     def update(self, blinky_pos):
         target_aux = tuple(map(sum, zip(self.pacman.getPos(), tuple(i * 4 for i in self.pacman.getVel()))))

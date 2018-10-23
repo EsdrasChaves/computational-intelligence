@@ -7,13 +7,13 @@ from Map import *
 
 class Ghost(object):
     RADIUS = int(TILE_WIDTH/2)
-    def __init__(self, mapa, color, pos_x, pos_y, pacman):
+    def __init__(self, mapa, color, pos_x, pos_y, pacman, startTime):
         self.mapa = mapa
         self.pos_x = pos_x 
         self.pos_y = pos_y 
         self.color = color
         self.pacman = pacman
-
+        self.startTime = startTime
         self.current_vel = (0, 0)
 
         self.Frame = 0
@@ -25,20 +25,30 @@ class Ghost(object):
             'up': (0, -1)
         }
 
-    def update(self, target):
-        self.Frame += 1
 
-        if (((self.pos_x, self.pos_y) == self.pacman.getPos()) and self.Frame == (FPS/MPS)):
+    def update(self, target):
+
+        if (((self.pos_x, self.pos_y) == self.pacman.getPos())):
             self.pacman.killPacman()
+
+
+        
+        if( self.startTime > 0):
+            if(self.Frame + 1 == FPS/MPS):
+                self.startTime -= 1
+            return
+        self.Frame += 1
 
         self.handle_mov(target)
 
-        if (((self.pos_x, self.pos_y) == self.pacman.getPos()) and self.Frame == (FPS/MPS)):
+        if (((self.pos_x, self.pos_y) == self.pacman.getPos())):
             self.pacman.killPacman()
+
 
         if(self.Frame == FPS/MPS):
             self.Frame = 0
-    
+
+
 
     def draw(self, win):
         pygame.draw.circle(

@@ -43,9 +43,18 @@ def game_loop(win, mapa, neural_net, train):
         left = 0
         right = 0
 
-        input_data = np.array([[calcDist(pacman.getPos(), blinky.getPos()), calcDist(pacman.getPos(), pinky.getPos()), calcDist(pacman.getPos(), inky.getPos()), calcDist(pacman.getPos(), clyde.getPos())]])
+        pac_bli_x = pacman.getPos()[0] - blinky.getPos()[0]
+        pac_bli_y = pacman.getPos()[1] - blinky.getPos()[1]
+        pac_pin_x = pacman.getPos()[0] - pinky.getPos()[0]
+        pac_pin_y = pacman.getPos()[1] - pinky.getPos()[1]
+        pac_ink_x = pacman.getPos()[0] - inky.getPos()[0]
+        pac_ink_y = pacman.getPos()[1] - inky.getPos()[1]
+        pac_cly_x = pacman.getPos()[0] - clyde.getPos()[0]
+        pac_cly_y = pacman.getPos()[1] - clyde.getPos()[1]
 
-        np.interp(input_data, (0, 36), (-1, +1))
+        input_data = np.array([[pac_bli_x, pac_bli_y, pac_cly_x, pac_cly_y, pac_ink_x, pac_ink_y, pac_pin_x, pac_pin_y]])
+        
+        np.interp(input_data, (-26, 26), (-1, +1))
 
         if(mapa.map[pacman.getPos()[1] - 1][pacman.getPos()[0]] != 1):
             up = 1

@@ -8,8 +8,8 @@ class Pacman(object):
     RADIUS = int(TILE_WIDTH/2)
     def __init__(self, mapa, neural_net):
         self.mapa = mapa
-        self.pos_x = 10
-        self.pos_y = 11 
+        self.pos_x = 11
+        self.pos_y = 17
 
         self.vel_x = 1
         self.vel_y = 0
@@ -32,7 +32,7 @@ class Pacman(object):
         self.handle_mov(input_data)
         self.handle_colision()
 
-        if(self.count > 100):
+        if(self.count > TimeToStarve):
             self.killPacman()
             
 
