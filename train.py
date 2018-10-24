@@ -15,6 +15,8 @@ class Train():
         self.best_ind = best_ind
         self.lucky = lucky
         self.mutation_rate = mutation_rate
+        self.best_score = 0
+        self.gen_without_improv = 0
 
     def createpopulation(self):
         self.neural_net = []
@@ -26,12 +28,21 @@ class Train():
 
 
     def call(self):
+        population = []
         for i in range(50000):
             print("GENERATION={}\n".format(i))
             for net in self.neural_net:
                 net.setscore(self.fitness(run(net, True)))
 
             population = self.selectbest(self.sortnets())
+            
+            
+            if(population[0].score > self.best_score):
+                self.best_score = population[0].score
+                self.gen_without_improv = 0
+            else:
+                self.gen_without_improv += 1
+
             population = self.breed(population)
             self.neural_net = population
 
@@ -53,10 +64,17 @@ class Train():
     # para compor a próxima geração
     def selectbest(self, sorted_population):
         next_generation = []
-        for i in range(self.best_ind):
+        if(self.gen_without_improv > 30):
+            elitism = int(self.best_ind/4)
+            lucky = self.lucky + self.best_ind - int(self.best_ind/4)
+        else:
+            elitism = self.best_ind
+            lucky = self.lucky
+
+        for i in range(elitism):
             next_generation.append(sorted_population[i][0])
 
-        for i in range(self.lucky):
+        for i in range(lucky):
             next_generation.append(random.choice(sorted_population)[0])
 
         return next_generation
@@ -73,7 +91,7 @@ class Train():
     def breed(self, population):
 
         # Podução de filhos entre os indivíduos 0 e 1, 2 e 3, ... da população
-        for i in range(0, int((self.best_ind + self.lucky)/2), 2):
+        for i in range(0, self.best_ind + self.lucky, 2):
 
             # seleciona uma camada, um neurônio dessa camada e um peso desse neurônio
             rand_layer = randint(0, population[i].max_depth)
@@ -87,17 +105,17 @@ class Train():
 
             # todos os pesos, a partir do peso escolhido (inclusive), do neeurônio escolhido, na camada escolhida, será igual o da mãe
             #print(population[i + 1].weights[rand_layer][rand_weight:])
-            new_weight[rand_layer][rand_weight:, rand_neuron] = population[i + 1].weights[rand_layer][rand_weight:, rand_neuron]
+            new_weight[rand_layer][rand_weight:, rand_neuron] = copy.deepcopy(population[i + 1].weights[rand_layer][rand_weight:, rand_neuron])
 
             # todos os neurônios subsequentes, da mesma camada, serão iguais aos da mãe
             # é preciso verifica se o neurônio escolhido não era o último da camada. Se for, já estamos feitos com a camada escolhida. Shape[1] -> número de colunas (neurônios) da camada rand_layer
             if rand_neuron != (new_weight[rand_layer].shape[1] - 1): 
-                new_weight[rand_layer][:, rand_neuron + 1:] = population[i + 1].weights[rand_layer][:, rand_neuron + 1:]
+                new_weight[rand_layer][:, rand_neuron + 1:] = copy.deepcopy(population[i + 1].weights[rand_layer][:, rand_neuron + 1:])
 
             # todas as camadas subsequentes serão iguais as da mãe
             # é preciso verificar se a camada escolhida não é a última camada. Se for, já estamos feitos com a rede.
             if rand_layer != population[i].max_depth: 
-                new_weight[rand_layer + 1:] = population[i + 1].weights[rand_layer + 1:]
+                new_weight[rand_layer + 1:] = copy.deepcopy(population[i + 1].weights[rand_layer + 1:])
 
             # adiciona o novo filho na população após a mutação
             population.append(NeuralNetwork(weights=self.mutation(new_weight), new_neural_net=False))
@@ -109,13 +127,13 @@ class Train():
             # mesma dinâmica do anterior
             new_weight = copy.deepcopy(population[i + 1].weights)
 
-            new_weight[rand_layer][rand_weight:, rand_neuron] = population[i].weights[rand_layer][rand_weight:, rand_neuron]
+            new_weight[rand_layer][rand_weight:, rand_neuron] = copy.deepcopy(population[i].weights[rand_layer][rand_weight:, rand_neuron])
 
             if rand_neuron != (new_weight[rand_layer].shape[1] - 1): 
-                new_weight[rand_layer][:, rand_neuron + 1:] = population[i].weights[rand_layer][:, rand_neuron + 1:]
+                new_weight[rand_layer][:, rand_neuron + 1:] = copy.deepcopy(population[i].weights[rand_layer][:, rand_neuron + 1:])
 
             if rand_layer != population[i + 1].max_depth: 
-                new_weight[rand_layer + 1:] = population[i].weights[rand_layer + 1:]
+                new_weight[rand_layer + 1:] = copy.deepcopy(population[i].weights[rand_layer + 1:])
 
             population.append(NeuralNetwork( weights=self.mutation(new_weight), new_neural_net=False))
 
@@ -138,7 +156,13 @@ class Train():
 
                     # calcula-se a chance de mutaçao, se esta for inferior a taxa de mutação, o peso será alterado
                     chance = random.random()
-                    if chance < self.mutation_rate:
+
+                    if(self.gen_without_improv > 30):
+                        mutation_rate = 2*self.mutation_rate
+                    else:
+                        mutation_rate = self.mutation_rate
+
+                    if chance < mutation_rate:
                         # a variação do peso é escolhida e, existe uma change igual da soma ou subtração ser escolhida como operação de mutação
                         delta_value = random.random()
                         if(random.randint(0, 1) == 1):
